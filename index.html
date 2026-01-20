@@ -109,7 +109,9 @@
                 bookList.push(book);
                 updateTable();
                 updateCSV();
-                
+                inputField.value = "";
+                status.textContent = "";
+                inputField.focus();
                 document.getElementById('isbnInput').value = "";
                 status.textContent = "";
 

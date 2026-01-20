@@ -51,7 +51,7 @@
     <h1>ISBN検索</h1>
     
     <div class="input-area">
-        <input type="text" id="isbnInput" placeholder="ISBN（ハイフンなし）を入力">
+        <input type="text" id="isbnInput" placeholder="ISBN（ハイフンなし）を入力" onkeydown="if(event.key==='Enter') addBook()">
         <button onclick="addBook()">追加</button>
         <p id="status" style="color: rgb(47, 50, 147);"></p>
     </div>
@@ -79,11 +79,13 @@
         const bookList = [];
 
         async function addBook() {
-            const isbn = document.getElementById('isbnInput').value.trim();
+            const inputField = document.getElementById('isbnInput');
+            const isbn = inputField.value.trim();
             const status = document.getElementById('status');
-            status.textContent = "検索中";
-
+            
             if (!isbn) return;
+            status.textContent = "検索中...";
+
 
             try {
                 // 国立国会図書館のAPIを使用。ありがとう国立国会図書館！

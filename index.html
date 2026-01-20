@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ISBN検索</title>
+    <style>
+        body {
+            font-family: 'Noto Sans', sans-serif; 
+            max-width: 800px; 
+            margin: 20px auto; 
+            padding: 0 20px; 
+            line-height: 1.6; }
+        .input-area {
+            background: #f4f4f4; 
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px; }
+        input {
+            padding: 10px;
+            width: 250px;
+            border: 1px solid #ccc;
+            border-radius: 4px; }
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px; }
+        button:hover { background: #0056b3; }
+        table { 
+            width: 100%;
+            border-collapse:collapse;
+            margin-top: 20px;}
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left; }
+        th { background: #eee; }
+        .csv-area { margin-top: 30px; }
+        textarea {
+            width: 100%;
+            height: 150px;
+            font-family: monospace; }
+    </style>
+</head>
+<body>
+
+    <h1>ISBN検索</h1>
+    
+    <div class="input-area">
+        <input type="text" id="isbnInput" placeholder="ISBN（ハイフンなし）を入力">
+        <button onclick="addBook()">追加</button>
+        <p id="status" style="color: rgb(47, 50, 147);"></p>
+    </div>
+
+    <table id="bookTable">
+        <thead>
+            <tr>
+                <th>ISBN</th>
+                <th>書籍名</th>
+                <th>著者名</th>
+                <th>出版社</th>
+                <th>出版年</th>
+            </tr>
+        </thead>
+        <tbody>
+            </tbody>
+    </table>
+
+    <div class="csv-area">
+        <h3>コピペ用CSV</h3>
+        <textarea id="csvOutput" readonly placeholder="ここにデータをCSV形式で表示"></textarea>
+    </div>
+
+    <script>
+        const bookList = [];
+
+        async function addBook() {
+            const isbn = document.getElementById('isbnInput').value.trim();
+            const status = document.getElementById('status');
+            status.textContent = "検索中";
+
+            if (!isbn) return;
+
+            try {
+                // 国立国会図書館のAPIを使用。ありがとう国立国会図書館！
+                const response = await fetch(`https://ndlsearch.ndl.go.jp/api/opensearch?isbn=${isbn}`);
+                const text = await response.text();
+                const parser = new DOMParser();
+                const xml = parser.parseFromString(text, "text/xml");
+                const item = xml.querySelector('item');
+
+                if (!item) {
+                    status.textContent = "書籍 not found";
+                    return;
+                }
+
+                const book = {
+                    isbn: isbn,
+                    title: item.querySelector('title')?.textContent || "不明",
+                    author: item.getElementsByTagName('dc:creator')[0]?.textContent || "不明",
+                    publisher: item.getElementsByTagName('dc:publisher')[0]?.textContent || "不明",
+                    date: item.getElementsByTagName('dc:date')[0]?.textContent || "不明"
+                };
+
+                bookList.push(book);
+                updateTable();
+                updateCSV();
+                
+                document.getElementById('isbnInput').value = "";
+                status.textContent = "";
+
+            } catch (error) {
+                status.textContent = "エラーかも";
+                console.error(error);
+            }
+        }
+
+        function updateTable() {
+            const tbody = document.querySelector('#bookTable tbody');
+            tbody.innerHTML = "";
+            bookList.forEach(book => {
+                const row = `<tr>
+                    <td>${book.isbn}</td>
+                    <td>${book.title}</td>
+                    <td>${book.author}</td>
+                    <td>${book.publisher}</td>
+                    <td>${book.date}</td>
+                </tr>`;
+                tbody.insertAdjacentHTML('beforeend', row);
+            });
+        }
+
+        function updateCSV() {
+            const header = "ISBN,書籍名,著者名,出版社,出版年\n";
+            const rows = bookList.map(b => `"${b.isbn}","${b.title}","${b.author}","${b.publisher}","${b.date}"`).join("\n");
+            document.getElementById('csvOutput').value = header + rows;
+        }
+    </script>
+</body>
+</html>

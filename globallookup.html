@@ -3,7 +3,7 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>蔵書リスト作成ツール (GP版)</title>
+    <title>蔵書リスト作成ツール (OL版)</title>
     <style>
         body {
             font-family: 'Noto Sans', sans-serif;
@@ -48,7 +48,7 @@
 </head>
 <body>
 
-    <h1>Global版ISBN検索</h1>
+    <h1>Open Library ISBN検索</h1>
     
     <div class="input-area">
         <input type="text" id="isbnInput" placeholder="ISBN（半角・ハイフンなし）を入力" onkeydown="if(event.key==='Enter') addBook()">
@@ -139,7 +139,6 @@
                     <td>${book.author}</td>
                     <td>${book.publisher}</td>
                     <td>${book.date}</td>
-                    <td><button class="delete-btn" onclick="deleteBook(${index})">削除</button></td>
                 </tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
             });

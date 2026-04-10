@@ -38,7 +38,7 @@
             font-size: 14px; }
         th, td {
             border: 1px solid #ddd;
-            padding: 10px;
+            padding: 12px;
             text-align: left; }
         th { background: #eee; }
         .csv-area { margin-top: 30px; }
@@ -125,12 +125,6 @@
             }
         }
 
-        function deleteBook(index) {
-            bookList.splice(index, 1);
-            updateTable();
-            updateCSV();
-        }
-
         function updateTable() {
             const tbody = document.querySelector('#bookTable tbody');
             tbody.innerHTML = "";
@@ -152,5 +146,7 @@
             document.getElementById('csvOutput').value = header + rows;
         }
     </script>
+    <a href="https://halcekey.github.io/isbntocsv" class="top-button">
+  NDL版
 </body>
 </html>

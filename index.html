@@ -45,7 +45,7 @@
             width: 100%;
             height: 150px;
             font-family: monospace; }
-         .top-button {
+        .top-button {
             position: fixed;
             top: 20px;
             right: 20px;
@@ -59,6 +59,43 @@
 
         .top-button:hover {
              background-color: #b35600;}
+             
+        .info-button {
+            position: fixed;
+            top: 20px;
+            right: 100px;
+            padding: 11px 16px;
+            background-color: #9facb7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            z-index: 1000;}
+
+        .info-button:hover {
+            background-color: #9fb1be;}
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);}
+        .modal-content {
+            background: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 8px;}
+        .close {
+            float: right;
+            font-size: 24px;
+            cursor: pointer;}
     </style>
 </head>
 <body>
@@ -153,12 +190,42 @@
             });
         }
 
-        function updateCSV() {
-            const header = "ISBN,書籍名,著者名,出版社,出版年\n";
-            const rows = bookList.map(b => `"${b.isbn}","${b.title}","${b.author}","${b.publisher}","${b.date}"`).join("\n");
-            document.getElementById('csvOutput').value = header + rows;
+    function updateCSV() {
+        const header = "ISBN,書籍名,著者名,出版社,出版年\n";
+        const rows = bookList.map(b => `"${b.isbn}","${b.title}","${b.author}","${b.publisher}","${b.date}"`).join("\n");
+        document.getElementById('csvOutput').value = header + rows;
+    }
+    function toggleModal() {
+        const modal = document.getElementById("licenseModal");
+        modal.style.display = modal.style.display === "block" ? "none" : "block";
+    }
+
+    window.onclick = function(event) {
+        const modal = document.getElementById("licenseModal");
+        if (event.target === modal) {
+            modal.style.display = "none";
         }
-    </script>
+    }
+</script>
     <a href="https://halcekey.github.io/isbntocsv/ol" class="top-button" target="_blank" rel="noopener noreferrer"> OL版</a>
+    <button class="info-button" onclick="toggleModal()">ｉ</button>
+    <div id="licenseModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="toggleModal()">&times;</span>
+                <h2>ライセンス情報</h2>
+    <p>
+        本サイトは国立国会図書館サーチのメタデータを利用しています。
+    </p>
+    <p>
+      ライセンスは
+      <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">
+        <strong>CC BY 4.0（表示）</strong></a>です。
+      
+    </p>
+    <p>
+      出典：<a href="https://ndlsearch.ndl.go.jp/help/api" target="_blank" rel="noopener noreferrer">NDL Search API</a>
+    </p>
+  </div>
+</div>
 </body>
 </html>

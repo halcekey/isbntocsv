@@ -152,7 +152,10 @@
                 }
 
                 const info = data[bookKey];
-                
+                const rawDate = info.publish_date || "不明";
+                const yearMatch = rawDate.match(/\d{4}/); // 4桁の数字を探す
+                const formattedDate = yearMatch ? yearMatch[0] : rawDate; 
+
                 const publisherName = info.publishers ? info.publishers.map(p => p.name).join(", ") : "不明";
 
                 const place = info.publish_places ? info.publish_places.map(p => p.name).join(", ") : "不明";

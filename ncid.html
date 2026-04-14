@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/svg+xml" href="https://halcekey.github.io/favicon.svg">
-    <title>ISBN/NCID検索 (NDL+CiNii+OL)</title>
+    <title>ISBN/NCID検索</title>
     <style>
         body { font-family: 'Noto Sans', sans-serif; max-width: 1000px; margin: 20px auto; padding: 0 20px; line-height: 1.6; }
         .input-area { background: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
@@ -32,7 +32,7 @@
 <div class="input-area">
     <input type="text" id="isbnInput" placeholder="ISBN または NCID" onkeydown="if(event.key==='Enter') addBook()">
     <button onclick="addBook()">追加</button>
-    <p id="status" style="color: rgb(47, 50, 147); font-weight: bold;"></p>
+    <p id="status" style="color: rgb(47, 50, 147);"></p>
 </div>
 
 <table id="bookTable">
@@ -72,6 +72,7 @@ async function addBook() {
     status.textContent = "検索中...";
 
     try {
+        //ありがとう国立国会図書館！だいすき！
         const ndlUrl = isNCID
             ? `https://ndlsearch.ndl.go.jp/api/opensearch?any=${rawInput}`
             : `https://ndlsearch.ndl.go.jp/api/opensearch?isbn=${inputCleaned}`;
@@ -110,6 +111,7 @@ async function addBook() {
 
        if (!finalNCID && finalISBN !== "不明") {
             try {
+                //ありがとうCiNii！だいすき！
                 const ciniiUrl = `https://ci.nii.ac.jp/books/opensearch/search?isbn=${finalISBN}&appid=mOPA8iOPWzGfE1nfRaAn`;
                 const ciniiRes = await fetch(ciniiUrl);
                 const ciniiXml = new DOMParser().parseFromString(await ciniiRes.text(), "text/xml");
@@ -133,6 +135,7 @@ async function addBook() {
         let place = "不明";
         if (finalISBN !== "不明") {
             try {
+                //ありがとうOpen Library！だいすき！
                 const olUrl = `https://openlibrary.org/api/books?bibkeys=ISBN:${finalISBN}&format=json&jscmd=data`;
                 const olRes = await fetch(olUrl);
                 const olData = await olRes.json();

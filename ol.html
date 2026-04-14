@@ -116,6 +116,7 @@
                 <th>書籍名</th>
                 <th>著者名</th>
                 <th>出版社</th>
+                <th>出版地</th>
                 <th>出版年</th>
             </tr>
         </thead>
@@ -154,11 +155,14 @@
                 
                 const publisherName = info.publishers ? info.publishers.map(p => p.name).join(", ") : "不明";
 
+                const place = info.publish_places ? info.publish_places.map(p => p.name).join(", ") : "不明";
+                
                 const book = {
                     isbn: isbn,
                     title: info.title || "不明",
                     author: info.authors ? info.authors.map(a => a.name).join(", ") : "不明",
                     publisher: publisherName,
+                    place: info.publish_places ? info.publish_places.map(p => p.name).join(", ") : "不明",
                     date: info.publish_date || "不明"
                 };
 
@@ -185,6 +189,7 @@
                     <td>${book.title}</td>
                     <td>${book.author}</td>
                     <td>${book.publisher}</td>
+                    <td>${book.place}</td>
                     <td>${book.date}</td>
                 </tr>`;
                 tbody.insertAdjacentHTML('beforeend', row);
@@ -192,8 +197,8 @@
         }
 
         function updateCSV() {
-            const header = "ISBN,書籍名,著者名,出版社,出版年\n";
-            const rows = bookList.map(b => `"${b.isbn}","${b.title}","${b.author}","${b.publisher}","${b.date}"`).join("\n");
+            const header = "ISBN,書籍名,著者名,出版社,出版地,出版年\n";
+            const rows = bookList.map(b => `"${b.isbn}","${b.title}","${b.author}","${b.publisher}","${b.place}","${b.date}"`).join("\n");
             document.getElementById('csvOutput').value = header + rows;
         }
         function toggleModal() {

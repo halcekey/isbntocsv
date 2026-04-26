@@ -9,20 +9,23 @@
         body { font-family: 'Noto Sans', sans-serif; max-width: 1000px; margin: 20px auto; padding: 0 20px; line-height: 1.6; }
         .input-area { background: #e0e0e0; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
         input { padding: 10px; width: 300px; border: 1px solid #ccc; border-radius: 4px; }
-        .button1 { padding: 10px 20px; cursor: pointer; background: #007bff; color: white; border: none; border-radius: 4px; }
-        .button1:hover { background: #0056b3; }
-        .button2 { padding: 10px 20px; cursor: pointer; background: #ff7b00; color: white; border: none; border-radius: 4px; }
-        .button2:hover { background: #b35600; }
-        .button3 { padding: 10px 20px; cursor: pointer; background: #7bff00; color: white; border: none; border-radius: 4px; }
-        .button3:hover { background: #56b300; }
+        .button1 { padding: 10px 20px; cursor: pointer; background: #8d8bf7; color: rgb(59, 59, 59); border: none; border-radius: 4px; }
+        .button1:hover { background: #6e6ef7; }
+        .button2 { padding: 10px 20px; cursor: pointer; background: #f78c8b; color: rgb(59, 59, 59); border: none; border-radius: 4px; }
+        .button2:hover { background: #f76f6e; }
+        .button3 { padding: 10px 20px; cursor: pointer; background: #f5f78b; color: rgb(59, 59, 59); border: none; border-radius: 4px; }
+        .button3:hover { background: #f7f76e; }
         
     </style>
 </head>
 <body>
 
     <h1>書籍情報検索</h1>
+<div>国立国会図書館のデータベースを使って検索する</div>
     <button class="button1" onclick="window.open('https://halcekey.github.io/isbntocsv/isbn', '_blank')">NDL 軽量版</button>
+<div>Open Libraryのデータベースを使って検索する（洋書向け）</div>
     <button class="button2" onclick="window.open('https://halcekey.github.io/isbntocsv/ol', '_blank')">OL版</button>
+<div>NCIDでも検索する（ちょっと遅い）</div>
     <button class="button3" onclick="window.open('https://halcekey.github.io/isbntocsv/ncid', '_blank')">NCID対応版</button>
 
 </body>
